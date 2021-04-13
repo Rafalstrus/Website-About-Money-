@@ -1,0 +1,15 @@
+::placeholder { 
+    color: rgb(0, 189, 0);
+    opacity: 1;
+}
+input,select{
+    background-color: #121212;
+    border-color: rgba(0,0, 189, 0);
+    color: rgb(0, 189, 0);
+    border-radius:0;
+}
+input:focus{
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
+    border-color:rgba(0,0, 189, 0);
+}

@@ -1,0 +1,55 @@
+:root {
+  --rows-count: calc(85vw/240px)
+}
+
+.card-container {
+    display: grid;
+    background-color: #121212;
+    border: solid #D50000;
+    border-radius: 15px;
+    padding-top: 12px;
+    padding-bottom: 75px;
+    cursor: pointer;
+    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: transform 0.25s ease-out;
+  }
+  
+  .card-container:hover {
+    transform: scale(1.05);
+  }
+  .currency-name{
+    color: red;
+    font-size:150%;
+    width: 80%;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  .currency-value{
+    color: rgb(0, 189, 0);
+    font-size:120%;
+    width: 80%;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-block-start: 0;
+    font-weight: bold;
+  }
+  .exchange-value{
+    color: rgb(0,162,232);
+    font-size: 150%;
+    height: 1px;
+  }
+
+  #selected {
+    width: 85vw;
+    height: 480px;
+    display: block;
+    grid-column: 1 / -1;
+  }
+  #selected:hover {
+    transform: none;
+  }
+  
+
+  
