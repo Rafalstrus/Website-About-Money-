@@ -20,6 +20,7 @@ export const Card = props => (
       }
       clickedCard[props.index-1].setAttribute("id", "selected");
       props.getChartData(props.rate.code,props.table.table)
+      
     }
   }
 }>
@@ -28,18 +29,23 @@ export const Card = props => (
     <p className='exchange-value'>
       {props.search ? ((props.currencyValue/props.rate.mid) * props.search).toFixed(5) : ''}
     </p>
-    {makeChart(props.index,props.chartData)}
+    {makeChart(props.index,props.chartData,props.currencyValue,props.code,props.rate.code,props.rate.mid)}
     
   </div>
 )
 
-function makeChart(index,chartData){
+function makeChart(index,chartData,currencyValue,code,ratecode,ratemid){
   try{
     if(document.getElementsByClassName('card-container')[index-1].getAttribute("id")==="selected"){
      return <ChartContainer
      chartData={chartData}
+     currencyValue= {currencyValue}
+     code = {code}
+     ratecode = {ratecode}
+     ratemid={ratemid}
      /> 
     }
+    document.getElementById('chart').style.visibility ='visible';
    }
    catch(e){
 }
