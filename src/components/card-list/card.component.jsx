@@ -7,18 +7,19 @@ import {ChartContainer} from '../chart/chart.component'
 export const Card = props => (
   <div className='card-container' style={{display: props.code === props.rate.code? 'none': ''}  }
   onClick={()=>{
-    props.getChartData(props.rate.code,props.table.table)
-    try {
-    var searchIfExistId = document.getElementById('selected')
-    searchIfExistId.removeAttribute("id");
-    }catch (error) {
-    }
     var clickedCard = document.getElementsByClassName('card-container')
-    if(clickedCard[props.index-1].getAttribute("id")==="selected")
-    {clickedCard[props.index-1].removeAttribute("id")}
+    if(clickedCard[props.index-1].getAttribute("id")==="selected"){
+    document.getElementById('chart').style.visibility ='hidden';
+    clickedCard[props.index-1].removeAttribute("id")
+    }
     else
     {
+      var searchIfExistId = document.getElementById('selected')
+      if(searchIfExistId){
+        searchIfExistId.removeAttribute("id");
+      }
       clickedCard[props.index-1].setAttribute("id", "selected");
+      props.getChartData(props.rate.code,props.table.table)
     }
   }
 }>
@@ -27,12 +28,22 @@ export const Card = props => (
     <p className='exchange-value'>
       {props.search ? ((props.currencyValue/props.rate.mid) * props.search).toFixed(5) : ''}
     </p>
-    {/*chartExist ?<ChartContainer/> : null*/}
-  <p>{
-      console.log(document.getElementsByClassName('card-container')[props.index-1])
-  }</p>
+    {makeChart(props.index,props.chartData)}
+    
   </div>
 )
+
+function makeChart(index,chartData){
+  try{
+    if(document.getElementsByClassName('card-container')[index-1].getAttribute("id")==="selected"){
+     return <ChartContainer
+     chartData={chartData}
+     /> 
+    }
+   }
+   catch(e){
+}
+}
 /*
       
           /*chartData={this.state.chartCode}

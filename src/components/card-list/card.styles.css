@@ -20,6 +20,7 @@
     transform: scale(1.05);
   }
   .currency-name{
+    height: 30px;
     color: red;
     font-size:150%;
     width: 80%;
@@ -27,6 +28,7 @@
     margin: 0 auto;
   }
   .currency-value{
+    height: 22px;
     color: rgb(0, 189, 0);
     font-size:120%;
     width: 80%;
@@ -36,6 +38,7 @@
     font-weight: bold;
   }
   .exchange-value{
+    height: 32px;
     color: rgb(0,162,232);
     font-size: 150%;
     height: 1px;
@@ -47,9 +50,7 @@
     display: block;
     grid-column: 1 / -1;
   }
-  #selected:hover {
-    transform: none;
-  }
+  
   
 
   

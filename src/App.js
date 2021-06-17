@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import { CardList } from './components/card-list/card-list.component';
 import { SearchBox } from './components/search-box/search-box.component';
-import { ChartContainer } from './components/chart/chart.component';
 
 class App extends Component {
   constructor() {
@@ -49,13 +48,18 @@ class App extends Component {
     endDay.setDate(endDay.getDate() - this.state.chartDays)
     try {
       const chartData = await this.getCurrencyFromDay(code, table, endDay, today)
-      this.setState({ chartData }, () => { console.log(this.state.chartData) })
+      this.setState({ chartData })
     } catch (error) {
       console.log(error)
     }
   }
-  getCurrencyFromDay(code, table, start, end) {
-    // tu skonczylem
+  async getCurrencyFromDay(code, table) {
+    if(code === 'PLN'){
+      code = "USD"
+      table ='A'
+    }
+    var end = new Date();
+    var start = new Date(new Date().setDate(end.getDate()-30))
     let year = start.getFullYear()
     let month = start.getMonth() < 10 ? '0' + start.getMonth() : start.getMonth();
     let day = start.getDate()
@@ -64,7 +68,6 @@ class App extends Component {
     month = end.getMonth() < 10 ? '0' + end.getMonth() : end.getMonth();
     day = end.getDate()
     var endDate = year + "-" + month + "-" + day;
-    console.log(`http://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
     return fetch(`http://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
       .then((response) => response.json())
   }
@@ -84,7 +87,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1 id='website-title'>How much you have</h1>
+        <h1 id='website-title'>How much do you have?</h1>
         <div id="">
           <SearchBox
             currency={this.state.currency}
@@ -101,6 +104,7 @@ class App extends Component {
           currencyCodeChange={this.handleCurrencyCodeChange}
           currencyValueChange={this.handleCurrencyValueChange}
           getChartData={this.handleChartData}
+          chartData = {this.state.chartData}
         />
       </div>
     );

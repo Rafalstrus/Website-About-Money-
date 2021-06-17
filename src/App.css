@@ -7,3 +7,6 @@
 #website-title{
   margin-block-start: 0;
 }
+::-webkit-scrollbar-track {
+  background: rgb(0, 189, 0);; 
+}

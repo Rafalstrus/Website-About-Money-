@@ -1,3 +1,7 @@
-#chart{
-    
+.chartjs-render-monitor{
+    width: 100%;
+    height: 480px !important;
+    position: absolute;
+    top:80px;
+    overflow: hidden;
 }
