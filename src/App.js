@@ -8,12 +8,13 @@ class App extends Component {
     super();
     this.state = {
       currency: [],
-      search: 0,
+      search: "",
       currencyCode: 'PLN',
       currencyValue: 1,
       chartDays: 3,
       chartCode: '',
-      chartData: []
+      chartData: [],
+      USDValue: 0
     };
   }
 
@@ -33,6 +34,9 @@ class App extends Component {
       const currency = [currencyPLN, ...currencyA, ...currencyB];
 
       this.setState({ currency })
+      let goingThroughtJSONToGetUSD = this.state.currency[1]
+      this.setState({ USDValue : goingThroughtJSONToGetUSD.rates[1].mid})
+      // another method to get USD value (this.state.currency[1]).rates[1].mid
     } catch (error) {
       console.log(error)
     }
@@ -84,6 +88,8 @@ class App extends Component {
   handleChartData = (code, table) => {
     this.setState({ chartCode: code }, () => {this.getChartDataFromTable(code, table)})
   }
+
+  
   render() {
     return (
       <div className="App">
@@ -94,6 +100,7 @@ class App extends Component {
             searchChange={this.handleSearchChange}
             currencyCodeChange={this.handleCurrencyCodeChange}
             currencyValueChange={this.handleCurrencyValueChange}
+            search ={this.state.search}
           />
         </div>
         <CardList
@@ -105,8 +112,11 @@ class App extends Component {
           currencyValueChange={this.handleCurrencyValueChange}
           getChartData={this.handleChartData}
           chartData = {this.state.chartData}
+          USDValue = {this.state.USDValue}
         />
       </div>
+
+    //maybe add loading screen in the future :)
     );
   }
 }

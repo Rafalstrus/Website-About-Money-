@@ -25,16 +25,15 @@ export const Card = props => (
   }
 }>
     <p className='currency-name'>{props.rate.code} {props.rate.currency}</p>
-    <p className='currency-value'>{(props.currencyValue/props.rate.mid).toFixed(5)}</p>
+    <p className='currency-value'>{(props.rate.mid/props.currencyValue).toFixed(5)}</p>
     <p className='exchange-value'>
       {props.search ? ((props.currencyValue/props.rate.mid) * props.search).toFixed(5) : ''}
     </p>
-    {makeChart(props.index,props.chartData,props.currencyValue,props.code,props.rate.code,props.rate.mid)}
-    
+    {makeChart(props.index,props.chartData,props.currencyValue,props.code,props.rate.code,props.rate.mid,props.USDValue)}
   </div>
 )
 
-function makeChart(index,chartData,currencyValue,code,ratecode,ratemid){
+function makeChart(index,chartData,currencyValue,code,ratecode,ratemid,USDValue){
   try{
     if(document.getElementsByClassName('card-container')[index-1].getAttribute("id")==="selected"){
      return <ChartContainer
@@ -43,6 +42,7 @@ function makeChart(index,chartData,currencyValue,code,ratecode,ratemid){
      code = {code}
      ratecode = {ratecode}
      ratemid={ratemid}
+     USDValue={USDValue}
      /> 
     }
     document.getElementById('chart').style.visibility ='visible';

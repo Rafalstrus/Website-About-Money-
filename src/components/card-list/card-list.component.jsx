@@ -24,6 +24,7 @@ export const CardList = props => (
             getChartData={props.getChartData}
             chartData ={props.chartData}
             table={table}
+            USDValue ={props.USDValue}
           />)
         }
         )

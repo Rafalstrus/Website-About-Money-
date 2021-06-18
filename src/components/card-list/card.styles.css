@@ -5,10 +5,10 @@
 .card-container {
     display: grid;
     background-color: #121212;
-    border: solid #D50000;
-    border-radius: 15px;
+    border: solid #771515;
+    border-radius: 24px;
     padding-top: 12px;
-    padding-bottom: 75px;
+    padding-bottom: 95px;
     cursor: pointer;
     -moz-osx-font-smoothing: grayscale;
     backface-visibility: hidden;
