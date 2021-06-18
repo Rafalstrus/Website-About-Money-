@@ -5,9 +5,8 @@ import './search-box.styles.css';
 
 
 function filterData(e,change){
-console.log(e)
 let pattern = /^[0-9]+\.?[0-9]*$/
-//potestuj potem
+//test later
 if(e.match(pattern) && e.length<8) { change(e)}
 else if(e.length===0){change(e)}
 }

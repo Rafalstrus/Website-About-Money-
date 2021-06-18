@@ -23,6 +23,7 @@ Array.min = function( array ){
 function setMin(){
   var minData= Array.min(state.datasets[0].data)
   options.scales.yAxes[0].ticks.min =(minData-(10*minData/100))
+  
 }
 
 const state = {
@@ -34,7 +35,7 @@ const state = {
       borderColor: 'red',
       pointRadius: 5,
       pointBackgroundColor: 'yellow',
-      borderWidth: 2,
+      borderWidth: 4,
       data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     }
   ]
@@ -48,8 +49,15 @@ const options = {
     scales: {
       yAxes: [{
           ticks: {
-              min: 1
+              min: 1,
+              fontSize: 20
+
           }
+      }],
+      xAxes :[{
+        ticks : {
+          fontSize: 20
+        }
       }]
   },
     legend:{
@@ -58,6 +66,7 @@ const options = {
     tooltips: {
       displayColors: false,
       titleFontSize: 20,
+      bodyFontColor: "rgb(0, 189, 0)",
       bodyFontSize: 30,
       xPadding: 30,
       yPadding: 30,
