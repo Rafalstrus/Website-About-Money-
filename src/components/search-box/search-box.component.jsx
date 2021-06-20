@@ -15,10 +15,11 @@ export const SearchBox = props => (
   <div id="Search-Box">
     <select name="currencies" onChange={e => {
       props.currencyValueChange(e.target.value)
-      props.currencyCodeChange(e.target.options[e.target.selectedIndex].text)
+      props.handleCurrencySelectedCodeChange(e.target.options[e.target.selectedIndex].text)
     }
     } >
-      {props.currency.map(
+
+      {props.currencyTable.map(
         (table, index) =>
           table.rates.map(rate => (
             <Option key={index + rate.code} rate={rate} />

@@ -2,10 +2,10 @@
     width: 100%;
     height: 480px !important;
     position: absolute;
-    top:80px;
+    top:110px;
     overflow: hidden;
 }
 #avg{
-    margin-top: 120px;
+    margin-top: 240px;
     color: rgb(0, 189, 0);
 }

@@ -19,9 +19,10 @@
   margin-right: 10px;
 }
 #logo:hover{
-  -webkit-animation:loading 2s linear infinite;
-  -moz-animation:loading 2s linear infinite;
-  animation:loading 2s linear infinite;
+  -webkit-animation:loading 2s normal forwards ease-in-out ;
+  -moz-animation:loading 2s normal forwards ease-in-out ;
+  animation:loading 2s normal forwards ease-in-out ;
+  animation-iteration-count: 1;
 }
 @keyframes loading {
   0%   {transform:  rotate(0deg);}

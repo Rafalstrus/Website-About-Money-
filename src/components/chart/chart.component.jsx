@@ -23,7 +23,7 @@ function changeData(props) {
 
 function setMin() {
   var minData = Array.min(state.datasets[0].data)
-  options.scales.yAxes[0].ticks.min = (minData - (10 * minData / 100))
+  options.scales.yAxes[0].ticks.suggestedMin  = (minData - (10 * minData / 100))
 
 }
 
@@ -49,7 +49,6 @@ const options = {
   scales: {
     yAxes: [{
       ticks: {
-        min: 1,
         fontSize: 20
 
       }

@@ -7,9 +7,10 @@ let count = 0  //countinge cards
 
 export const CardList = props => (
   <div className='card-list' >
-    {props.currency.map(
+    {props.currencyTable.map(
       (table, index) =>
         table.rates.map(rate => {
+          console.log()
           count += 1
           return (
             <Card
@@ -17,7 +18,7 @@ export const CardList = props => (
               index={count % 151 > 0 ? count % 151 : 150}
               rate={rate}
               search={props.search}
-              code={props.code}
+              currencyselectedCode={props.currencyselectedCode}
               currencyValue={props.currencyValue}
               currencyCodeChange={props.currencyCodeChange}
               currencyValueChange={props.currencyValueChange}
@@ -25,7 +26,9 @@ export const CardList = props => (
               chartData={props.chartData}
               table={table}
               USDValue={props.USDValue}
+              handleSelectedID={props.handleSelectedID}
             />)
+            
         }
         )
     )}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import './App.css';
 import { CardList } from './components/card-list/card-list.component';
 import { SearchBox } from './components/search-box/search-box.component';
@@ -10,17 +10,19 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currency: [],   //table with all information about currencies
+      currencyTable: [],   //table with all information about currencies
       search: "",     //text from search-box component
-      currencyCode: 'PLN',
+      currencyselectedCode: 'PLN',
       currencyValue: 1,
       chartDays: 30,  //from how many days chart get data
       chartCode: '',
       chartData: [],  //data from one specific clicked currency
       USDValue: 0,    //number, will be define 
-      isLoading: true //loading screen displaying
+      isLoading: true, //loading screen displaying
+      selectedID: ""
     };
   }
+
 
   async componentDidMount() {
     try {
@@ -37,8 +39,8 @@ class App extends Component {
       const currencyB = await this.getCurrencyFromTable('B');
       const currency = [currencyPLN, ...currencyA, ...currencyB];
 
-      this.setState({ currency })
-      let goingThroughtJSONToGetUSD = this.state.currency[1]
+      this.setState({ currencyTable : currency })
+      let goingThroughtJSONToGetUSD = this.state.currencyTable[1]
       this.setState({ USDValue: goingThroughtJSONToGetUSD.rates[1].mid },
         () => {
           setTimeout(
@@ -81,8 +83,8 @@ class App extends Component {
     this.setState({ chartData })
   }
 
-  handleCurrencyCodeChange = code => {
-    this.setState({ currencyCode: code })
+  handleCurrencySelectedCodeChange = code => {
+    this.setState({ currencyselectedCode: code })
   }
   handleSearchChange = value => {
     this.setState({ search: value })
@@ -93,34 +95,46 @@ class App extends Component {
   handleChartData = (code, table) => {
     this.setState({ chartCode: code }, () => { this.getChartDataFromTable(code, table) })
   }
-
+  handleArrowClick = (e) => {
+    //console.log(e.key)
+    if(e.path[0].id !== "Search-Input"){
+      if(this.state.selectedid !== ""){
+        console.log("git")
+      }
+    }
+  }
+  handleSelectedID = (id) => {
+    this.setState({selectedid: id}, ()=> {console.log(this.state.selectedid)})
+  }
 
   render() {
     return (
       (this.state.isLoading) ?
         <LoadingScreen /> :
         <div className="App">
+          {document.addEventListener('keydown', this.handleArrowClick)}
           <img src="favicon.svg" alt="" id="logo"></img>
           <span id='website-title'>How much do you have?</span>
           <div id="">
             <SearchBox
-              currency={this.state.currency}
+              currencyTable={this.state.currencyTable}
               searchChange={this.handleSearchChange}
-              currencyCodeChange={this.handleCurrencyCodeChange}
+              handleCurrencySelectedCodeChange={this.handleCurrencySelectedCodeChange}
               currencyValueChange={this.handleCurrencyValueChange}
               search={this.state.search}
             />
           </div>
           <CardList
-            currency={this.state.currency}
+            currencyTable={this.state.currencyTable}
             search={this.state.search}
-            code={this.state.currencyCode}
+            currencyselectedCode={this.state.currencyselectedCode}
             currencyValue={this.state.currencyValue}
             currencyCodeChange={this.handleCurrencyCodeChange}
-            currencyValueChange={this.handleCurrencyValueChange}
+            handleCurrencySelectedCodeChange={this.handleCurrencySelectedCodeChange}
             getChartData={this.handleChartData}
             chartData={this.state.chartData}
             USDValue={this.state.USDValue}
+            handleSelectedID ={this.handleSelectedID}
           />
         </div>
 
