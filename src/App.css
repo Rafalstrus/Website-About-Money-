@@ -9,7 +9,23 @@
 
 #website-title{
   margin-block-start: 0;
+  font-size: 50px;
 }
 ::-webkit-scrollbar-track {
   background: rgb(0, 189, 0);; 
+}
+#logo{
+  width:70px;
+  margin-right: 10px;
+}
+#logo:hover{
+  -webkit-animation:loading 2s linear infinite;
+  -moz-animation:loading 2s linear infinite;
+  animation:loading 2s linear infinite;
+}
+@keyframes loading {
+  0%   {transform:  rotate(0deg);}
+  25%  {transform:  rotate(120deg);}
+  75%  {transform:  rotate(320deg);}
+  100% {transform:  rotate(360deg);}
 }

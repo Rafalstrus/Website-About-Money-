@@ -39,9 +39,8 @@ function makeChart(index,chartData,currencyValue,code,ratecode,ratemid,USDValue)
      return <ChartContainer
      chartData={chartData}
      currencyValue= {currencyValue}
-     code = {code}
-     ratecode = {ratecode}
      ratemid={ratemid}
+     ratecode={ratecode}
      USDValue={USDValue}
      /> 
     }

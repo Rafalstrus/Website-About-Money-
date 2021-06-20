@@ -13,7 +13,7 @@ else if(e.length===0){change(e)}
 
 export const SearchBox = props => (
   <div id="Search-Box">
-    <select name="cars" id="cars" onChange={e => {
+    <select name="currencies" onChange={e => {
       props.currencyValueChange(e.target.value)
       props.currencyCodeChange(e.target.options[e.target.selectedIndex].text)
     }

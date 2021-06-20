@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { CardList } from './components/card-list/card-list.component';
 import { SearchBox } from './components/search-box/search-box.component';
+import { LoadingScreen } from './components/loading-screen/loading-screen.component';
 
 
 
@@ -9,14 +10,15 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currency: [],
-      search: "",
+      currency: [],   //table with all information about currencies
+      search: "",     //text from search-box component
       currencyCode: 'PLN',
       currencyValue: 1,
-      chartDays: 3,
+      chartDays: 30,  //from how many days chart get data
       chartCode: '',
-      chartData: [],
-      USDValue: 0
+      chartData: [],  //data from one specific clicked currency
+      USDValue: 0,    //number, will be define 
+      isLoading: true //loading screen displaying
     };
   }
 
@@ -30,42 +32,38 @@ class App extends Component {
           "currency": "pln (Polska)",
           "code": "PLN", "mid": 1
         }]
-      };
+      };  //json from Api does not have pln
       const currencyA = await this.getCurrencyFromTable('A');
       const currencyB = await this.getCurrencyFromTable('B');
       const currency = [currencyPLN, ...currencyA, ...currencyB];
 
       this.setState({ currency })
       let goingThroughtJSONToGetUSD = this.state.currency[1]
-      this.setState({ USDValue : goingThroughtJSONToGetUSD.rates[1].mid})
-      // another method to get USD value (this.state.currency[1]).rates[1].mid
+      this.setState({ USDValue: goingThroughtJSONToGetUSD.rates[1].mid },
+        () => {
+          setTimeout(
+            () => { this.setState({ isLoading: false }) }
+            , 1000)
+        })
+
+      // 40-41 another method to get USD value (this.state.currency[1]).rates[1].mid
     } catch (error) {
       console.log(error)
     }
   }
-
+  //api from nbp have 3 tables, 2 are usefull in project
   getCurrencyFromTable(table) {
     return fetch(`http://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`)
       .then((response) => response.json())
   }
-  getChartDataFromTable = async (code, table) => {
-    const today = new Date()
-    const endDay = new Date(today)
-    endDay.setDate(endDay.getDate() - this.state.chartDays)
-    try {
-      const chartData = await this.getCurrencyFromDay(code, table, endDay, today)
-      this.setState({ chartData })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
   async getCurrencyFromDay(code, table) {
-    if(code === 'PLN'){
+    if (code === 'PLN') {
       code = "USD"
-      table ='A'
+      table = 'A'
     }
     var end = new Date();
-    var start = new Date(new Date().setDate(end.getDate()-30))
+    var start = new Date(new Date().setDate(end.getDate() - this.state.chartDays))
     let year = start.getFullYear()
     let month = start.getMonth() < 10 ? '0' + start.getMonth() : start.getMonth();
     let day = start.getDate()
@@ -78,6 +76,11 @@ class App extends Component {
       .then((response) => response.json())
   }
 
+  getChartDataFromTable = async (code, table) => {
+    const chartData = await this.getCurrencyFromDay(code, table)
+    this.setState({ chartData })
+  }
+
   handleCurrencyCodeChange = code => {
     this.setState({ currencyCode: code })
   }
@@ -88,37 +91,39 @@ class App extends Component {
     this.setState({ currencyValue: value })
   }
   handleChartData = (code, table) => {
-    this.setState({ chartCode: code }, () => {this.getChartDataFromTable(code, table)})
+    this.setState({ chartCode: code }, () => { this.getChartDataFromTable(code, table) })
   }
 
-  
+
   render() {
     return (
-      <div className="App">
-        <h1 id='website-title'>How much do you have?</h1>
-        <div id="">
-          <SearchBox
+      (this.state.isLoading) ?
+        <LoadingScreen /> :
+        <div className="App">
+          <img src="favicon.svg" alt="" id="logo"></img>
+          <span id='website-title'>How much do you have?</span>
+          <div id="">
+            <SearchBox
+              currency={this.state.currency}
+              searchChange={this.handleSearchChange}
+              currencyCodeChange={this.handleCurrencyCodeChange}
+              currencyValueChange={this.handleCurrencyValueChange}
+              search={this.state.search}
+            />
+          </div>
+          <CardList
             currency={this.state.currency}
-            searchChange={this.handleSearchChange}
+            search={this.state.search}
+            code={this.state.currencyCode}
+            currencyValue={this.state.currencyValue}
             currencyCodeChange={this.handleCurrencyCodeChange}
             currencyValueChange={this.handleCurrencyValueChange}
-            search ={this.state.search}
+            getChartData={this.handleChartData}
+            chartData={this.state.chartData}
+            USDValue={this.state.USDValue}
           />
         </div>
-        <CardList
-          currency={this.state.currency}
-          search={this.state.search}
-          code={this.state.currencyCode}
-          currencyValue={this.state.currencyValue}
-          currencyCodeChange={this.handleCurrencyCodeChange}
-          currencyValueChange={this.handleCurrencyValueChange}
-          getChartData={this.handleChartData}
-          chartData = {this.state.chartData}
-          USDValue = {this.state.USDValue}
-        />
-      </div>
 
-    //maybe add loading screen in the future :)
     );
   }
 }

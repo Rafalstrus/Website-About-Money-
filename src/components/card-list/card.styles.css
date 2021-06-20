@@ -50,6 +50,9 @@
     display: block;
     grid-column: 1 / -1;
   }
+  #selected:hover{
+    transform: scale(1);
+  }
   
   
 

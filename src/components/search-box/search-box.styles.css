@@ -7,7 +7,7 @@ input,select{
     border-color: rgba(0,0, 189, 0);
     color: rgb(0, 189, 0);
     border-radius:0;
-    height: 40px;
+    height: 45px;
 }
 input:focus,select:focus{
     outline: none !important;
@@ -15,7 +15,10 @@ input:focus,select:focus{
     border-color:rgba(0,0, 189, 0);
 }
 input{
-    width: 250px;
+    width: 350px;
+}
+select{
+    width: 70px;
 }
 #Search-Box{
     margin-bottom:30px;
