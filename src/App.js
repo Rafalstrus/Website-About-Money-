@@ -18,7 +18,7 @@ class App extends Component {
       chartData: [],  //data from one specific clicked currency
       USDValue: 0,    //number, will be define 
       isLoading: true, //loading screen displaying
-      selectedID: ""
+      selectedID: "" 
     };
   }
 
@@ -96,7 +96,7 @@ class App extends Component {
     })
   }
   handleSelectedID = (id) => {
-    this.setState({selectedID: id}, () => {/*this.toFocus.focus()*/})
+    this.setState({selectedID: id})
   }
   handleArrowClick = (e) => {
     //console.log(e.key)
@@ -122,10 +122,12 @@ class App extends Component {
             if(code !== this.state.currencyselectedCode){
             this.handleSelectedID(+selected-1)
             this.handleChartData(code,table)
+            document.getElementById('selected').focus()
             }
             else if(selected !==1){
               this.handleSelectedID(+selected-2)
               this.handleChartData(code,table)
+              document.getElementById('selected').focus()
             }
           }
         }
@@ -143,10 +145,12 @@ class App extends Component {
           if(code !== this.state.currencyselectedCode){
           this.handleSelectedID(+selected+1)
           this.handleChartData(code,table)
+          document.getElementById('selected').focus()
           }
           else if(selected !==150){
             this.handleSelectedID(+selected+2)
             this.handleChartData(code,table)
+            document.getElementById('selected').focus()
           }
         }
       }
@@ -163,7 +167,6 @@ class App extends Component {
           {document.addEventListener('keydown', this.handleArrowClick)}
           <img src="favicon.svg" alt="" id="logo"></img>
           <span id='website-title'>How much do you have?</span>
-          <div id="">
             <SearchBox
               currencyTable={this.state.currencyTable}
               searchChange={this.handleSearchChange}
@@ -171,7 +174,6 @@ class App extends Component {
               currencyValueChange={this.handleCurrencyValueChange}
               search={this.state.search}
             />
-          </div>
           <CardList
             currencyTable={this.state.currencyTable}
             search={this.state.search}

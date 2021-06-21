@@ -53,7 +53,12 @@
   #selected:hover{
     transform: scale(1);
   }
-  
+
+  .card-container:focus{
+    border: solid #771515;
+    border-radius: 24px;
+    outline: none;
+  }
   
 
   

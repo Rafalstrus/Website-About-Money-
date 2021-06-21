@@ -6,8 +6,8 @@ import { ChartContainer } from '../chart/chart.component'
 
 export const Card = props => (
   <div className='card-container' id={((props.index - 1)===props.selectedID)? "selected": ""}
-  //ref ={x => this.toFocus =x}
   style={{ display: props.currencyselectedCode === props.rate.code ? 'none' : '' }}
+  tabIndex={-1}
    onClick={() => {
       var clickedCard = document.getElementsByClassName('card-container')
       if (clickedCard[props.index - 1].getAttribute("id") === "selected") {
@@ -24,6 +24,7 @@ export const Card = props => (
         props.handleSelectedID(props.index-1)
         clickedCard[props.index - 1].setAttribute("id", "selected");
         props.getChartData(props.rate.code, props.table.table)
+        document.getElementById('selected').focus()
 
       }
     }

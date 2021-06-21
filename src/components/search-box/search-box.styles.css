@@ -21,5 +21,9 @@ select{
     width: 70px;
 }
 #Search-Box{
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
     margin-bottom:30px;
+    z-index: 1;
 }
