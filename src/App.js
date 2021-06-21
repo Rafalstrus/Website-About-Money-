@@ -15,7 +15,6 @@ class App extends Component {
       currencyselectedCode: 'PLN',
       currencyValue: 1,
       chartDays: 30,  //from how many days chart get data
-      chartCode: '',
       chartData: [],  //data from one specific clicked currency
       USDValue: 0,    //number, will be define 
       isLoading: true, //loading screen displaying
@@ -48,7 +47,7 @@ class App extends Component {
             , 1000)
         })
 
-      // 40-41 another method to get USD value (this.state.currency[1]).rates[1].mid
+      // another method to get USD value (this.state.currency[1]).rates[1].mid
     } catch (error) {
       console.log(error)
     }
@@ -93,25 +92,62 @@ class App extends Component {
     this.setState({ currencyValue: value })
   }
   handleChartData = (code, table) => {
-    this.setState({ chartCode: code }, () => { this.getChartDataFromTable(code, table) })
+    this.setState({ chartCode: code }, () => { this.getChartDataFromTable(code, table)
+    })
+  }
+  handleSelectedID = (id) => {
+    this.setState({selectedID: id}, () => {/*this.toFocus.focus()*/})
   }
   handleArrowClick = (e) => {
     //console.log(e.key)
+    var selected = this.state.selectedID 
     if(e.path[0].id !== "Search-Input"){
-      if(this.state.selectedid !== ""){
-        console.log("git")
+      if(this.state.selectedID !== ""){
+        let code = ""
+        let table =""
+        if(e.keyCode === 37){
+          if(+selected >0){
+            if(+selected===1){
+              code= "PLN"
+              table =this.state.currencyTable[0].table
+            }
+            else if(selected <=36){
+              code =this.state.currencyTable[1].rates[selected-2].code
+              table =this.state.currencyTable[1].table
+            }
+            else if(selected >36){
+              code =this.state.currencyTable[2].rates[selected-37].code
+              table =this.state.currencyTable[2].table
+            }
+            this.handleSelectedID(+selected-1)
+            this.handleChartData(code,table)
+          }
+        }
+        else if(e.keyCode === 39){
+        if(+selected<150){
+          
+          if(selected <35){
+            code = this.state.currencyTable[1].rates[selected].code
+            table = this.state.currencyTable[1].table
+          }
+          else if(selected >=35){
+            code = this.state.currencyTable[2].rates[selected-35].code
+            table = this.state.currencyTable[2].table
+          }
+          this.handleSelectedID(+selected+1)
+          this.handleChartData(code,table)
+        }
+      }
       }
     }
   }
-  handleSelectedID = (id) => {
-    this.setState({selectedid: id}, ()=> {console.log(this.state.selectedid)})
-  }
+
 
   render() {
     return (
       (this.state.isLoading) ?
         <LoadingScreen /> :
-        <div className="App">
+        <div className="App" >
           {document.addEventListener('keydown', this.handleArrowClick)}
           <img src="favicon.svg" alt="" id="logo"></img>
           <span id='website-title'>How much do you have?</span>
@@ -134,6 +170,7 @@ class App extends Component {
             getChartData={this.handleChartData}
             chartData={this.state.chartData}
             USDValue={this.state.USDValue}
+            selectedID={this.state.selectedID}
             handleSelectedID ={this.handleSelectedID}
           />
         </div>
