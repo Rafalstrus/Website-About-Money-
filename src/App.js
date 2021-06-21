@@ -119,8 +119,14 @@ class App extends Component {
               code =this.state.currencyTable[2].rates[selected-37].code
               table =this.state.currencyTable[2].table
             }
+            if(code !== this.state.currencyselectedCode){
             this.handleSelectedID(+selected-1)
             this.handleChartData(code,table)
+            }
+            else if(selected !==1){
+              this.handleSelectedID(+selected-2)
+              this.handleChartData(code,table)
+            }
           }
         }
         else if(e.keyCode === 39){
@@ -134,8 +140,14 @@ class App extends Component {
             code = this.state.currencyTable[2].rates[selected-35].code
             table = this.state.currencyTable[2].table
           }
+          if(code !== this.state.currencyselectedCode){
           this.handleSelectedID(+selected+1)
           this.handleChartData(code,table)
+          }
+          else if(selected !==150){
+            this.handleSelectedID(+selected+2)
+            this.handleChartData(code,table)
+          }
         }
       }
       }
