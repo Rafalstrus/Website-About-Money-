@@ -1,5 +1,5 @@
 :root {
-  --rows-count: calc(85vw/240px)
+  --rows-count: calc(85vw/240)
 }
 
 .card-container {

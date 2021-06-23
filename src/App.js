@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { CardList } from './components/card-list/card-list.component';
 import { SearchBox } from './components/search-box/search-box.component';
@@ -18,7 +18,7 @@ class App extends Component {
       chartData: [],  //data from one specific clicked currency
       USDValue: 0,    //number, will be define 
       isLoading: true, //loading screen displaying
-      selectedID: "" 
+      selectedID: ""
     };
   }
 
@@ -38,7 +38,7 @@ class App extends Component {
       const currencyB = await this.getCurrencyFromTable('B');
       const currency = [currencyPLN, ...currencyA, ...currencyB];
 
-      this.setState({ currencyTable : currency })
+      this.setState({ currencyTable: currency })
       let goingThroughtJSONToGetUSD = this.state.currencyTable[1]
       this.setState({ USDValue: goingThroughtJSONToGetUSD.rates[1].mid },
         () => {
@@ -92,68 +92,71 @@ class App extends Component {
     this.setState({ currencyValue: value })
   }
   handleChartData = (code, table) => {
-    this.setState({ chartCode: code }, () => { this.getChartDataFromTable(code, table)
+    this.setState({ chartCode: code }, () => {
+      this.getChartDataFromTable(code, table)
     })
   }
   handleSelectedID = (id) => {
-    this.setState({selectedID: id})
+    this.setState({ selectedID: id })
   }
   handleArrowClick = (e) => {
-    //console.log(e.key)
-    var selected = this.state.selectedID 
-    if(e.path[0].id !== "Search-Input"){
-      if(this.state.selectedID !== ""){
-        let code = ""
-        let table =""
-        if(e.keyCode === 37){
-          if(+selected >0){
-            if(+selected===1){
-              code= "PLN"
-              table =this.state.currencyTable[0].table
-            }
-            else if(selected <=36){
-              code =this.state.currencyTable[1].rates[selected-2].code
-              table =this.state.currencyTable[1].table
-            }
-            else if(selected >36){
-              code =this.state.currencyTable[2].rates[selected-37].code
-              table =this.state.currencyTable[2].table
-            }
-            if(code !== this.state.currencyselectedCode){
-            this.handleSelectedID(+selected-1)
-            this.handleChartData(code,table)
-            document.getElementById('selected').focus()
-            }
-            else if(selected !==1){
-              this.handleSelectedID(+selected-2)
-              this.handleChartData(code,table)
-              document.getElementById('selected').focus()
-            }
-          }
+    var selected = this.state.selectedID
+    if (e.path[0].id !== "Search-Input" && this.state.selectedID !== "") {  //if you click in Search-Input nothing happend, and if any of cards was chosen
+      let code = ""
+      let table = ""
+      let tableOneLength = (this.state.currencyTable[1].rates).length
+      let TwoTablesLength = tableOneLength+ (this.state.currencyTable[2].rates).length
+      if (e.keyCode === 37 && +selected > 0) {   //left arrow
+        code = (+selected === 1)? "PLN" : (selected <= tableOneLength+1) ? code = this.state.currencyTable[1].rates[selected - 2].code : code = this.state.currencyTable[2].rates[selected - (tableOneLength+2)].code
+        selected = (code !== this.state.currencyselectedCode)? selected : (selected!==1)?selected-1: selected
+        console.log(tableOneLength)
+        if(+selected===1){
+          code= "PLN"
+          table =this.state.currencyTable[0].table
         }
-        else if(e.keyCode === 39){
-        if(+selected<150){
-          
-          if(selected <35){
-            code = this.state.currencyTable[1].rates[selected].code
-            table = this.state.currencyTable[1].table
-          }
-          else if(selected >=35){
-            code = this.state.currencyTable[2].rates[selected-35].code
-            table = this.state.currencyTable[2].table
-          }
-          if(code !== this.state.currencyselectedCode){
-          this.handleSelectedID(+selected+1)
-          this.handleChartData(code,table)
+        else if(selected <=(tableOneLength+1)){
+          code =this.state.currencyTable[1].rates[selected-2].code
+          table =this.state.currencyTable[1].table
+        }
+        else if(selected >(tableOneLength+1)){
+          code =this.state.currencyTable[2].rates[selected-(tableOneLength+2)].code
+          table =this.state.currencyTable[2].table
+        }
+        console.log(code,selected)
+        if (code !== this.state.currencyselectedCode) {  //to not select hidden cards
+          //here is small error check
+          this.handleSelectedID(+selected - 1)
+          this.handleChartData(code, table)
           document.getElementById('selected').focus()
-          }
-          else if(selected !==150){
-            this.handleSelectedID(+selected+2)
-            this.handleChartData(code,table)
-            document.getElementById('selected').focus()
-          }
+        }
+        else if (selected !== 1) { //check if the card is not the first
+          this.handleSelectedID(+selected - 2)  //to skip hidden card
+          this.handleChartData(code, table)
+          document.getElementById('selected').focus()
         }
       }
+      else if (e.keyCode === 39 && +selected < TwoTablesLength) {   //right click
+        code = (selected < tableOneLength)? this.state.currencyTable[1].rates[selected].code : this.state.currencyTable[2].rates[selected - 35].code
+        selected = (code !== this.state.currencyselectedCode)? selected : selected+1
+        if(selected < tableOneLength){
+          code = this.state.currencyTable[1].rates[selected].code
+          table = this.state.currencyTable[1].table
+        }
+        else if (selected >= tableOneLength && selected<=(TwoTablesLength-1)) {
+          code = this.state.currencyTable[2].rates[selected - tableOneLength].code
+          table = this.state.currencyTable[2].table
+        }
+        console.log(code,selected)
+        if (code !== this.state.currencyselectedCode) {  //to not select hidden cards 
+          this.handleSelectedID(+selected + 1)
+          this.handleChartData(code, table)
+          document.getElementById('selected').focus()
+        }
+        else if (selected !== TwoTablesLength) { //check if card is not the last
+          this.handleSelectedID(+selected + 2)//to skip hidden card
+          this.handleChartData(code, table)
+          document.getElementById('selected').focus()
+        }
       }
     }
   }
@@ -167,13 +170,13 @@ class App extends Component {
           {document.addEventListener('keydown', this.handleArrowClick)}
           <img src="favicon.svg" alt="" id="logo"></img>
           <span id='website-title'>How much do you have?</span>
-            <SearchBox
-              currencyTable={this.state.currencyTable}
-              searchChange={this.handleSearchChange}
-              handleCurrencySelectedCodeChange={this.handleCurrencySelectedCodeChange}
-              currencyValueChange={this.handleCurrencyValueChange}
-              search={this.state.search}
-            />
+          <SearchBox
+            currencyTable={this.state.currencyTable}
+            searchChange={this.handleSearchChange}
+            handleCurrencySelectedCodeChange={this.handleCurrencySelectedCodeChange}
+            currencyValueChange={this.handleCurrencyValueChange}
+            search={this.state.search}
+          />
           <CardList
             currencyTable={this.state.currencyTable}
             search={this.state.search}
@@ -185,7 +188,7 @@ class App extends Component {
             chartData={this.state.chartData}
             USDValue={this.state.USDValue}
             selectedID={this.state.selectedID}
-            handleSelectedID ={this.handleSelectedID}
+            handleSelectedID={this.handleSelectedID}
           />
         </div>
 

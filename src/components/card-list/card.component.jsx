@@ -5,8 +5,9 @@ import { ChartContainer } from '../chart/chart.component'
 
 
 export const Card = props => (
-  <div className='card-container' id={((props.index - 1)===props.selectedID)? "selected": ""}
-  style={{ display: props.currencyselectedCode === props.rate.code ? 'none' : '' }}
+  <div className='card-container' 
+  id={((props.index - 1)===props.selectedID)? "selected": ""}
+  style={{ display: (props.currencyselectedCode === props.rate.code) ? 'none' : '' }}
   tabIndex={-1}
    onClick={() => {
       var clickedCard = document.getElementsByClassName('card-container')
@@ -24,7 +25,6 @@ export const Card = props => (
         props.handleSelectedID(props.index-1)
         clickedCard[props.index - 1].setAttribute("id", "selected");
         props.getChartData(props.rate.code, props.table.table)
-        document.getElementById('selected').focus()
 
       }
     }
@@ -42,6 +42,7 @@ export const Card = props => (
 function makeChart(index, chartData, currencyValue, ratecode, ratemid, USDValue,selectedID) {
   try {
     if ((index - 1)===selectedID) {
+      document.getElementById('selected').focus()
       return <ChartContainer
         chartData={chartData}
         currencyValue={currencyValue}
@@ -50,7 +51,6 @@ function makeChart(index, chartData, currencyValue, ratecode, ratemid, USDValue,
         USDValue={USDValue}
       />
     }
-    document.getElementById('chart').style.display = 'block';
   }
   catch (e) {
   }
