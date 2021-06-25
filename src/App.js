@@ -18,7 +18,8 @@ class App extends Component {
       chartData: [],  //data from one specific clicked currency
       USDValue: 0,    //number, will be define 
       isLoading: true, //loading screen displaying
-      selectedID: ""
+      selectedID: "",
+      ArowClickEnd: true
     };
   }
 
@@ -101,64 +102,62 @@ class App extends Component {
   }
   handleArrowClick = (e) => {
     var selected = this.state.selectedID
-    if (e.path[0].id !== "Search-Input" && this.state.selectedID !== "") {  //if you click in Search-Input nothing happend, and if any of cards was chosen
+    //line below: chceck if clicked key was not in search input, check if at least one card was clicked and check if thisfunction has ended
+    if (e.path[0].id !== "Search-Input" && this.state.selectedID !== "" && this.state.ArowClickEnd) {  //if you click in Search-Input nothing happend, and if any of cards was chosen
+      this.setState({ ArowClickEnd: false })
       let code = ""
       let table = ""
-      let tableOneLength = (this.state.currencyTable[1].rates).length
-      let TwoTablesLength = tableOneLength+ (this.state.currencyTable[2].rates).length
+      let tableOneLength = (this.state.currencyTable[1].rates).length //length of the first table
+      let TwoTablesLength = tableOneLength + (this.state.currencyTable[2].rates).length //length of the both tables
       if (e.keyCode === 37 && +selected > 0) {   //left arrow
-        code = (+selected === 1)? "PLN" : (selected <= tableOneLength+1) ? code = this.state.currencyTable[1].rates[selected - 2].code : code = this.state.currencyTable[2].rates[selected - (tableOneLength+2)].code
-        selected = (code !== this.state.currencyselectedCode)? selected : (selected!==1)?selected-1: selected
-        console.log(tableOneLength)
-        if(+selected===1){
-          code= "PLN"
-          table =this.state.currencyTable[0].table
+        //2 lines below check if code and selectediD will be correct 
+        code = (+selected === 1) ? "PLN" : (selected <= tableOneLength + 1) ?  this.state.currencyTable[1].rates[selected - 2].code :  this.state.currencyTable[2].rates[selected - (tableOneLength + 2)].code
+        selected = (code !== this.state.currencyselectedCode) ? selected : (selected !== 1) ? selected - 1 : selected
+        if (+selected === 1) {
+          code = "PLN"
+          table = this.state.currencyTable[0].table
         }
-        else if(selected <=(tableOneLength+1)){
-          code =this.state.currencyTable[1].rates[selected-2].code
-          table =this.state.currencyTable[1].table
+        else if (selected <= (tableOneLength + 1)) {
+          code = this.state.currencyTable[1].rates[selected - 2].code
+          table = this.state.currencyTable[1].table
         }
-        else if(selected >(tableOneLength+1)){
-          code =this.state.currencyTable[2].rates[selected-(tableOneLength+2)].code
-          table =this.state.currencyTable[2].table
+        else {
+          code = this.state.currencyTable[2].rates[selected - (tableOneLength + 2)].code
+          table = this.state.currencyTable[2].table
         }
-        console.log(code,selected)
         if (code !== this.state.currencyselectedCode) {  //to not select hidden cards
-          //here is small error check
-          this.handleSelectedID(+selected - 1)
-          this.handleChartData(code, table)
-          document.getElementById('selected').focus()
+          this.changeSelectedIDChardDataAndFocusOnSelected((+selected - 1), code, table)
         }
         else if (selected !== 1) { //check if the card is not the first
-          this.handleSelectedID(+selected - 2)  //to skip hidden card
-          this.handleChartData(code, table)
-          document.getElementById('selected').focus()
+          this.changeSelectedIDChardDataAndFocusOnSelected((+selected - 2), code, table)//to skip hidden card
         }
       }
       else if (e.keyCode === 39 && +selected < TwoTablesLength) {   //right click
-        code = (selected < tableOneLength)? this.state.currencyTable[1].rates[selected].code : this.state.currencyTable[2].rates[selected - 35].code
-        selected = (code !== this.state.currencyselectedCode)? selected : selected+1
-        if(selected < tableOneLength){
+        code = (selected < tableOneLength) ? this.state.currencyTable[1].rates[selected].code : this.state.currencyTable[2].rates[selected - 35].code
+        selected = (code !== this.state.currencyselectedCode) ? selected : selected + 1
+        if (selected < tableOneLength) {
           code = this.state.currencyTable[1].rates[selected].code
           table = this.state.currencyTable[1].table
         }
-        else if (selected >= tableOneLength && selected<=(TwoTablesLength-1)) {
+        else if (selected >= tableOneLength && selected <= (TwoTablesLength - 1)) {
           code = this.state.currencyTable[2].rates[selected - tableOneLength].code
           table = this.state.currencyTable[2].table
         }
-        console.log(code,selected)
         if (code !== this.state.currencyselectedCode) {  //to not select hidden cards 
-          this.handleSelectedID(+selected + 1)
-          this.handleChartData(code, table)
-          document.getElementById('selected').focus()
+          this.changeSelectedIDChardDataAndFocusOnSelected((+selected + 1), code, table)
         }
         else if (selected !== TwoTablesLength) { //check if card is not the last
-          this.handleSelectedID(+selected + 2)//to skip hidden card
-          this.handleChartData(code, table)
-          document.getElementById('selected').focus()
+          this.changeSelectedIDChardDataAndFocusOnSelected((+selected + 2), code, table)//to skip hidden card
         }
       }
+      setTimeout(() => { this.setState({ ArowClickEnd: true }) }, 200)
     }
+  }
+  //function to shorten handleArrowClick 
+  changeSelectedIDChardDataAndFocusOnSelected(newSelectedID, code, table) {
+    //here is small error check
+    this.setState({ selectedID: newSelectedID }, () => { this.handleChartData(code, table) })
+    document.getElementById('selected').focus()
   }
 
 
