@@ -55,7 +55,7 @@ class App extends Component {
   }
   //api from nbp have 3 tables, 2 are usefull in project
   getCurrencyFromTable(table) {
-    return fetch(`http://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`)
+    return fetch(`https://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`)
       .then((response) => response.json())
   }
 
@@ -74,7 +74,7 @@ class App extends Component {
     month = end.getMonth() < 10 ? '0' + end.getMonth() : end.getMonth();
     day = end.getDate()
     var endDate = year + "-" + month + "-" + day;
-    return fetch(`http://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
+    return fetch(`https://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
       .then((response) => response.json())
   }
 
@@ -111,7 +111,8 @@ class App extends Component {
       let TwoTablesLength = tableOneLength + (this.state.currencyTable[2].rates).length //length of the both tables
       if (e.keyCode === 37 && +selected > 0) {   //left arrow
         //2 lines below check if code and selectediD will be correct 
-        code = (+selected === 1) ? "PLN" : (selected <= tableOneLength + 1) ?  this.state.currencyTable[1].rates[selected - 2].code :  this.state.currencyTable[2].rates[selected - (tableOneLength + 2)].code
+        code = (+selected === 1) ? "PLN" : (selected <= tableOneLength + 1) ?  this.state.currencyTable[1].rates[selected - 2].code : 
+         this.state.currencyTable[2].rates[selected - (tableOneLength + 2)].code
         selected = (code !== this.state.currencyselectedCode) ? selected : (selected !== 1) ? selected - 1 : selected
         if (+selected === 1) {
           code = "PLN"
