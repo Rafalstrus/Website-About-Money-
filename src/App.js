@@ -68,11 +68,11 @@ class App extends Component {
     var start = new Date(new Date().setDate(end.getDate() - this.state.chartDays))
     let year = start.getFullYear()
     let month = (start.getMonth()+1) < 10 ? '0' + (start.getMonth()+1) : (start.getMonth()+1);
-    let day = start.getDate()
+    let day = (start.getDate() <10)? '0'+start.getDate() : start.getDate()
     var startDate = year + "-" + month + "-" + day;
     year = end.getFullYear()
     month = (end.getMonth()+1) < 10 ? '0' + (end.getMonth()+1) : (end.getMonth()+1);
-    day = end.getDate()
+    day = (end.getDate() <10)? '0'+end.getDate() : end.getDate()
     var endDate = year + "-" + month + "-" + day;
     return fetch(`https://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
       .then((response) => response.json())
