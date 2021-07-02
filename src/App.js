@@ -74,7 +74,6 @@ class App extends Component {
     month = (end.getMonth()+1) < 10 ? '0' + (end.getMonth()+1) : (end.getMonth()+1);
     day = end.getDate()
     var endDate = year + "-" + month + "-" + day;
-    console.log(startDate,endDate)
     return fetch(`https://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
       .then((response) => response.json())
   }
