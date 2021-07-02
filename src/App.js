@@ -67,12 +67,12 @@ class App extends Component {
     var end = new Date();
     var start = new Date(new Date().setDate(end.getDate() - this.state.chartDays))
     let year = start.getFullYear()
-    let month = (start.getMonth()+1) < 10 ? '0' + (start.getMonth()+1) : (start.getMonth()+1);
-    let day = (start.getDate() <10)? '0'+start.getDate() : start.getDate()
+    let month = (start.getMonth() + 1) < 10 ? '0' + (start.getMonth() + 1) : (start.getMonth() + 1);
+    let day = (start.getDate() < 10) ? '0' + start.getDate() : start.getDate()
     var startDate = year + "-" + month + "-" + day;
     year = end.getFullYear()
-    month = (end.getMonth()+1) < 10 ? '0' + (end.getMonth()+1) : (end.getMonth()+1);
-    day = (end.getDate() <10)? '0'+end.getDate() : end.getDate()
+    month = (end.getMonth() + 1) < 10 ? '0' + (end.getMonth() + 1) : (end.getMonth() + 1);
+    day = (end.getDate() < 10) ? '0' + end.getDate() : end.getDate()
     var endDate = year + "-" + month + "-" + day;
     return fetch(`https://api.nbp.pl/api/exchangerates/rates/${table}/${code}/${startDate}/${endDate}/?format=json`)
       .then((response) => response.json())
@@ -111,8 +111,8 @@ class App extends Component {
       let TwoTablesLength = tableOneLength + (this.state.currencyTable[2].rates).length //length of the both tables
       if (e.keyCode === 37 && +selected > 0) {   //left arrow
         //2 lines below check if code and selectediD will be correct 
-        code = (+selected === 1) ? "PLN" : (selected <= tableOneLength + 1) ?  this.state.currencyTable[1].rates[selected - 2].code : 
-         this.state.currencyTable[2].rates[selected - (tableOneLength + 2)].code
+        code = (+selected === 1) ? "PLN" : (selected <= tableOneLength + 1) ? this.state.currencyTable[1].rates[selected - 2].code :
+          this.state.currencyTable[2].rates[selected - (tableOneLength + 2)].code
         selected = (code !== this.state.currencyselectedCode) ? selected : (selected !== 1) ? selected - 1 : selected
         if (+selected === 1) {
           code = "PLN"
@@ -156,9 +156,10 @@ class App extends Component {
   }
   //function to shorten handleArrowClick 
   changeSelectedIDChardDataAndFocusOnSelected(newSelectedID, code, table) {
-    //here is small error check
-    this.setState({ selectedID: newSelectedID }, () => { this.handleChartData(code, table) })
-    document.getElementById('selected').focus()
+    this.setState({ selectedID: newSelectedID }, () => {
+      this.handleChartData(code, table);
+      document.getElementById('selected').focus()
+    })
   }
 
 
