@@ -75,8 +75,8 @@ const options = {
 
 export const ChartContainer = props => (
   <div id="chart">
-
     <Line
+      width={window.innerWidth/3.6}
       data={state}
       options={options}
     />
