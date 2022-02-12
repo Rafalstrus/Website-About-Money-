@@ -41,8 +41,8 @@ export const Card = props => (
 
 function makeChart(index, chartData, currencyValue, ratecode, ratemid, USDValue,selectedID) {
   try {
-    if ((index - 1)===selectedID) {
-      document.getElementById('selected').focus()
+    if ((index - 1) === selectedID) {
+    //  document.getElementById('selected').focus()
       return <ChartContainer
         chartData={chartData}
         currencyValue={currencyValue}
@@ -53,5 +53,6 @@ function makeChart(index, chartData, currencyValue, ratecode, ratemid, USDValue,
     }
   }
   catch (e) {
+    console.log(e);
   }
 }

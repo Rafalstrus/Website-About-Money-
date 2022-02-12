@@ -6,6 +6,7 @@
     -moz-animation:loading 2s linear infinite;
     animation:loading 2s linear infinite;
 }
+
 #loading-screen{
     width:100%;
     position: absolute;

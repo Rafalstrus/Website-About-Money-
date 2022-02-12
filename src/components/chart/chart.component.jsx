@@ -76,7 +76,7 @@ const options = {
 export const ChartContainer = props => (
   <div id="chart">
     <Line
-      width={window.innerWidth/3.6}
+      width={window.innerWidth / 3.6}
       data={state}
       options={options}
     />
@@ -84,7 +84,6 @@ export const ChartContainer = props => (
     {setMin()}
     <p id="avg">avg :{average(state.datasets[0].data).toFixed(5)}</p>
   </div>
-
 )
 
 

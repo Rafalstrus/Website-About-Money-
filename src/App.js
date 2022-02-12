@@ -103,7 +103,7 @@ class App extends Component {
   handleArrowClick = (e) => {
     var selected = this.state.selectedID
     //line below: chceck if clicked key was not in search input, check if at least one card was clicked and check if thisfunction has ended
-    if (e.path[0].id !== "Search-Input" && this.state.selectedID !== "" && this.state.ArowClickEnd) {  //if you click in Search-Input nothing happend, and if any of cards was chosen
+    if (e.target.id !== "Search-Input" && this.state.selectedID !== "" && this.state.ArowClickEnd) {  //if you click in Search-Input nothing happend, and if any of cards was chosen
       this.setState({ ArowClickEnd: false })
       let code = ""
       let table = ""
